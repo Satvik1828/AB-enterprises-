@@ -5,7 +5,7 @@
 
 window.AB_CONFIG = {
   // 1. OWNER DASHBOARD LOGIN (Change to your own username & password)
-  ownerUsername: "owner",
+  ownerUsername: "AB enterprises",
   ownerPassword: "ab1234",
 
   // 2. BUSINESS DETAILS (Shown on Website & Printed Invoices)
