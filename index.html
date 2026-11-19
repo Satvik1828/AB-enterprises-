@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AB Enterprise | Quality Bricks & Construction Supply</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <span class="brand-badge">AB</span>
+        <span id="hdr-biz-name">AB Enterprise</span>
+      </a>
+      <nav>
+        <a class="nav-btn active" href="index.html">Home</a>
+        <a class="nav-btn" href="#products">Bricks & Rates</a>
+        <a class="nav-btn" href="#destinations-public">Delivery Zones</a>
+        <a class="nav-btn" href="#order-section">Order / Estimate</a>
+        <a class="nav-btn owner-pill" href="owner.html">Owner Portal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="page-website">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1>Strong Bricks for Stronger Foundations — <span class="biz-name-txt">AB Enterprise</span></h1>
+          <p class="biz-tagline-txt">Quality Red Clay Bricks, Fly Ash Bricks, Wire-Cut Bricks & Interlocking Paver Blocks. Direct kiln-to-site delivery across all destinations.</p>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <a href="#order-section" class="btn btn-primary">Book Bricks & Get Estimate</a>
+            <button class="btn btn-wa" onclick="openQuickWhatsApp('Hello, I would like to know today\'s brick rates and delivery availability.')">Chat on WhatsApp</button>
+            <a href="owner.html" class="btn btn-hero-outline">Owner Login</a>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box"><h3 id="hero-stock">0</h3><p>Bricks Ready in Yard</p></div>
+          <div class="stat-box"><h3 id="hero-dests">0</h3><p>Delivery Destinations</p></div>
+          <div class="stat-box"><h3>24 Hr</h3><p>Fast Site Dispatch</p></div>
+          <div class="stat-box"><h3>GST / Cash</h3><p>Proper Billing Available</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="products">
+      <h2 class="section-title">Brick Catalog & Today's Factory Rates</h2>
+      <p class="section-sub">Rates shown are per 1,000 bricks (ex-kiln). Select your destination below for delivery freight.</p>
+      <div class="grid-4" id="public-products-grid"></div>
+    </section>
+
+    <section class="container" id="destinations-public">
+      <h2 class="section-title">Delivery Destinations & Standard Freight</h2>
+      <p class="section-sub">We deliver across local & outstation sites via Tractor Trolley and Dumper/Truck. Other destinations are served on request.</p>
+      <div class="grid-4" id="public-dest-grid"></div>
+    </section>
+
+    <section class="container" id="order-section">
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="section-title">Brick + Freight Calculator & Booking</h2>
+          <p class="section-sub">Select brick type, quantity, and delivery destination to book directly.</p>
+          <form id="public-order-form" onsubmit="handlePublicOrder(event)">
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="form-group"><label>Your Name *</label><input type="text" id="ord-name" required placeholder="e.g. Rajesh Kumar"></div>
+              <div class="form-group"><label>WhatsApp / Mobile *</label><input type="tel" id="ord-phone" required placeholder="10-digit mobile"></div>
+            </div>
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="form-group"><label>Brick Type *</label><select id="ord-brick" onchange="updatePublicEstimate()"></select></div>
+              <div class="form-group"><label>Quantity (Bricks) *</label><input type="number" id="ord-qty" min="100" step="100" value="2000" oninput="updatePublicEstimate()" required></div>
+            </div>
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="form-group"><label>Delivery Destination *</label><select id="ord-dest" onchange="updatePublicEstimate()"></select></div>
+              <div class="form-group">
+                <label>Preferred Vehicle</label>
+                <select id="ord-veh-type" onchange="updatePublicEstimate()">
+                  <option value="tractor">Tractor Trolley (~2,000 bricks)</option>
+                  <option value="truck">Dumper / Truck (~5,000+ bricks)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>Exact Site Address / Landmark *</label><textarea id="ord-address" rows="2" required placeholder="Plot No, Village/Colony, Landmark"></textarea></div>
+
+            <div class="estimate-box">
+              <div style="display:flex; justify-content:space-between; font-size:0.88rem;"><span>Bricks Value:</span><strong id="est-bricks">₹0</strong></div>
+              <div style="display:flex; justify-content:space-between; font-size:0.88rem;"><span>Approx. Transport Freight:</span><strong id="est-freight">₹0</strong></div>
+              <hr style="margin:0.4rem 0; border:none; border-top:1px solid #fed7aa;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>Estimated Total:</strong>
+                <strong style="font-size:1.4rem; color:var(--primary);" id="ord-estimate">₹0</strong>
+              </div>
+              <small style="color:var(--muted);" id="ord-load-info"></small>
+            </div>
+            <button type="submit" class="btn btn-wa" style="width:100%;">Submit Order & Send on WhatsApp</button>
+          </form>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <h2 class="section-title">Why Choose <span class="biz-name-txt">AB Enterprise</span>?</h2>
+            <ul style="padding-left:1.2rem; display:grid; gap:0.75rem; margin:1rem 0;">
+              <li><strong>GST & Cash Invoices:</strong> Proper itemized billing for contractors, builders & home owners.</li>
+              <li><strong>All Destinations Covered:</strong> Dedicated tractors & trucks for city, rural & highway sites.</li>
+              <li><strong>Honest Counting & Quality:</strong> Proper kiln firing, sharp edges & full load guarantee.</li>
+              <li><strong>Instant WhatsApp Updates:</strong> Digital bills, delivery challans & driver tracking on WhatsApp.</li>
+            </ul>
+          </div>
+          <div style="background:#f8fafc; padding:1rem; border-radius:10px; border:1px solid var(--border);">
+            <h4>Kiln & Office Contact</h4>
+            <p style="font-size:0.88rem; color:var(--muted); margin-top:0.25rem;" id="contact-address-display"></p>
+            <p style="font-size:0.88rem; margin-top:0.25rem;">
+              <strong>WhatsApp:</strong> <span id="contact-phone-display"></span><br>
+              <strong>Email:</strong> <span id="contact-email-display"></span><br>
+              <strong>GSTIN:</strong> <span id="contact-gst-display"></span>
+            </p>
+            <button class="btn btn-dark btn-sm" style="margin-top:0.65rem;" onclick="openQuickWhatsApp('Hello, please share kiln location and sample brick details.')">Get Kiln Location on WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="wa-float">
+    <div class="wa-popup hidden" id="wa-popup">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.45rem;">
+        <strong style="color:var(--whatsapp-dark);">WhatsApp <span class="biz-name-txt">AB Enterprise</span></strong>
+        <button onclick="toggleWaPopup()" style="border:none; background:none; cursor:pointer; font-weight:bold;">✕</button>
+      </div>
+      <textarea id="wa-custom-msg" rows="2" placeholder="Hi, I need brick rates..."></textarea>
+      <button class="btn btn-wa btn-sm" style="width:100%; margin-top:0.45rem;" onclick="sendPopupWhatsApp()">Start Chat</button>
+    </div>
+    <button class="wa-fab" onclick="toggleWaPopup()"><span>💬</span> WhatsApp</button>
+  </div>
+
+  <footer>
+    <p><strong class="biz-name-txt">AB Enterprise</strong> — Brick Manufacturing & Supply Management</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
