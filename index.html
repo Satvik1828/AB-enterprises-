@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AB Enterprise | Brick Manufacturing, Invoicing & Owner Portal</title>
+  <style>
+    :root {
+      --primary: #b83b24;
+      --primary-dark: #8f2a18;
+      --secondary: #1e293b;
+      --accent: #f59e0b;
+      --whatsapp: #25d366;
+      --whatsapp-dark: #128c7e;
+      --bg: #faf8f5;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --info: #2563eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; }
+    .hidden { display: none !important; }
+
+    header { background: var(--secondary); color: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.16); }
+    .nav-container { max-width: 1320px; margin: auto; padding: 0.78rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; }
+    .brand { display: flex; align-items: center; gap: 0.6rem; font-size: 1.28rem; font-weight: 800; color: #fff; cursor: pointer; }
+    .brand-badge { background: var(--primary); color: #fff; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.98rem; }
+    nav { display: flex; gap: 0.45rem; flex-wrap: wrap; align-items: center; }
+    .nav-btn { background: transparent; color: #e2e8f0; border: none; padding: 0.45rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+    .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-btn.owner-pill { background: var(--primary); color: #fff; }
+    .nav-btn.owner-pill:hover { background: var(--primary-dark); }
+
+    .container { max-width: 1320px; margin: auto; padding: 1.4rem 1.2rem; }
+    .section-title { font-size: 1.55rem; color: var(--secondary); font-weight: 800; margin-bottom: 0.3rem; }
+    .section-sub { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.92rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.95rem; }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; font-size: 0.9rem; text-decoration: none; transition: 0.18s; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-wa { background: var(--whatsapp); color: #fff; }
+    .btn-wa:hover { background: var(--whatsapp-dark); }
+    .btn-dark { background: var(--secondary); color: #fff; }
+    .btn-info { background: var(--info); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-outline { background: #fff; border: 1.5px solid #cbd5e1; color: var(--secondary); }
+    .btn-hero-outline { background: transparent; border: 1.5px solid #fff; color: #fff; }
+    .btn-sm { padding: 0.34rem 0.65rem; font-size: 0.79rem; border-radius: 6px; }
+
+    .hero { background: linear-gradient(135deg, rgba(30,41,59,0.96), rgba(184,59,36,0.9)); color: #fff; padding: 3rem 1.2rem; border-radius: 0 0 22px 22px; }
+    .hero-inner { max-width: 1320px; margin: auto; display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: center; }
+    .hero h1 { font-size: 2.3rem; line-height: 1.2; margin-bottom: 0.85rem; }
+    .hero p { color: #e2e8f0; margin-bottom: 1.3rem; }
+    .hero-stats { background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); padding: 1.25rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-box h3 { font-size: 1.45rem; color: var(--accent); }
+    .stat-box p { font-size: 0.82rem; margin: 0; color: #f1f5f9; }
+
+    .brick-icon { width: 44px; height: 26px; background: var(--primary); border-radius: 4px; margin-bottom: 0.65rem; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.22); }
+    .price-tag { font-size: 1.28rem; font-weight: 800; color: var(--primary); margin: 0.3rem 0; }
+    .badge { display: inline-block; padding: 0.18rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .badge-ok { background: #dcfce7; color: #166534; }
+    .badge-warn { background: #fef3c7; color: #92400e; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+
+    .form-group { margin-bottom: 0.78rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--secondary); }
+    input, select, textarea { width: 100%; padding: 0.54rem 0.72rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: #fff; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(184,59,36,0.12); }
+    .estimate-box { background: #fff7ed; border: 1px solid #fed7aa; padding: 0.85rem; border-radius: 10px; margin: 0.85rem 0; }
+
+    .login-wrap { min-height: 78vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+    .login-card { max-width: 420px; width: 100%; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .demo-creds { background: #f8fafc; border: 1px dashed #94a3b8; padding: 0.75rem; border-radius: 8px; font-size: 0.84rem; margin-bottom: 1rem; }
+
+    .kpi-card { background: #fff; border-left: 5px solid var(--primary); padding: 0.95rem 1.05rem; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .kpi-card span { font-size: 0.78rem; color: var(--muted); font-weight: 700; display: block; }
+    .kpi-card h2 { font-size: 1.4rem; margin-top: 0.15rem; color: var(--secondary); }
+
+    .owner-tabs { display: flex; gap: 0.42rem; flex-wrap: wrap; margin: 1.15rem 0; padding-bottom: 0.6rem; border-bottom: 2px solid var(--border); }
+    .tab-btn { padding: 0.5rem 0.85rem; border: none; background: #e2e8f0; color: var(--secondary); border-radius: 8px; font-weight: 700; font-size: 0.84rem; cursor: pointer; }
+    .tab-btn.active { background: var(--secondary); color: #fff; }
+
+    .sub-switch { display: inline-flex; background: #e2e8f0; padding: 4px; border-radius: 10px; }
+    .sub-switch button { border: none; background: transparent; padding: 0.45rem 1rem; border-radius: 7px; font-weight: 700; cursor: pointer; color: var(--secondary); font-size: 0.86rem; }
+    .sub-switch button.active { background: var(--primary); color: #fff; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.4rem; font-size: 0.86rem; }
+    th, td { padding: 0.6rem 0.65rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { background: #f8fafc; font-weight: 700; color: var(--secondary); white-space: nowrap; }
+
+    .alert-bar { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 0.7rem 0.95rem; border-radius: 10px; margin-top: 0.9rem; font-size: 0.86rem; }
+    .draft-items-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem; margin: 0.85rem 0; }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-box { background: #fff; border-radius: 12px; max-width: 720px; width: 100%; padding: 1.6rem; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 45px rgba(0,0,0,0.3); }
+    .inv-header { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 2px solid var(--secondary); padding-bottom: 0.8rem; margin-bottom: 0.9rem; flex-wrap: wrap; }
+    .inv-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; background: #f8fafc; padding: 0.8rem; border-radius: 8px; margin-bottom: 0.9rem; font-size: 0.88rem; }
+
+    .wa-float { position: fixed; bottom: 20px; right: 20px; z-index: 950; display: flex; flex-direction: column; align-items: flex-end; gap: 0.55rem; }
+    .wa-popup { background: #fff; border: 1px solid var(--border); border-radius: 12px; width: 280px; padding: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.18); }
+    .wa-fab { background: var(--whatsapp); color: #fff; border: none; border-radius: 999px; padding: 0.8rem 1.15rem; font-weight: 800; font-size: 0.9rem; cursor: pointer; box-shadow: 0 6px 18px rgba(37,211,102,0.4); display: flex; align-items: center; gap: 0.4rem; }
+
+    footer { background: var(--secondary); color: #cbd5e1; text-align: center; padding: 1.7rem 1rem; margin-top: 3rem; font-size: 0.86rem; }
+
+    @media (max-width: 768px) {
+      .hero-inner, .inv-meta-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+
+    @media print {
+      header, .wa-float, footer, #page-website, #page-login, #page-owner, .no-print { display: none !important; }
+      #print-modal { position: static; background: none; padding: 0; display: block !important; }
+      #print-modal .modal-box { box-shadow: none; max-width: 100%; border: 1px solid #000; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <div class="brand" onclick="openPublicPage()">
+        <span class="brand-badge">AB</span>
+        <span id="hdr-biz-name">AB Enterprise</span>
+      </div>
+      <nav>
+        <button class="nav-btn active" id="nav-web-btn" onclick="openPublicPage()">Website</button>
+        <a class="nav-btn" href="#products" onclick="openPublicPage()">Bricks & Rates</a>
+        <a class="nav-btn" href="#destinations-public" onclick="openPublicPage()">Delivery Zones</a>
+        <a class="nav-btn" href="#order-section" onclick="openPublicPage()">Order / Estimate</a>
+        <button class="nav-btn owner-pill" id="nav-owner-btn" onclick="openOwnerPortal()">Owner Portal</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== 1. PUBLIC WEBSITE ==================== -->
+  <main id="page-website">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1>Strong Bricks for Stronger Foundations — <span class="biz-name-txt">AB Enterprise</span></h1>
+          <p class="biz-tagline-txt">Quality Red Clay Bricks, Fly Ash Bricks, Wire-Cut Bricks & Interlocking Paver Blocks. Direct kiln-to-site delivery across all destinations.</p>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <a href="#order-section" class="btn btn-primary">Book Bricks & Get Estimate</a>
+            <button class="btn btn-wa" onclick="openQuickWhatsApp('Hello, I would like to know today\'s brick rates and delivery availability.')">Chat on WhatsApp</button>
+            <button class="btn btn-hero-outline" onclick="openOwnerPortal()">Owner Login</button>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box"><h3 id="hero-stock">0</h3><p>Bricks Ready in Yard</p></div>
+          <div class="stat-box"><h3 id="hero-dests">0</h3><p>Delivery Destinations</p></div>
+          <div class="stat-box"><h3>24 Hr</h3><p>Fast Site Dispatch</p></div>
+          <div class="stat-box"><h3>GST / Cash</h3><p>Proper Billing Available</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="products">
+      <h2 class="section-title">Brick Catalog & Today's Factory Rates</h2>
+      <p class="section-sub">Rates shown are per 1,000 bricks (ex-kiln). Select your destination below for delivery freight.</p>
+      <div class="grid-4" id="public-products-grid"></div>
+    </section>
+
+    <section class="container" id="destinations-public">
+      <h2 class="section-title">Delivery Destinations & Standard Freight</h2>
+      <p class="section-sub">We deliver across local & outstation sites via Tractor Trolley and Dumper/Truck. Other destinations are served on request.</p>
+      <div class="grid-4" id="public-dest-grid"></div>
+    </section>
+
+    <section class="container" id="order-section">
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="section-title">Brick + Freight Calculator & Booking</h2>
+          <p class="section-sub">Select brick type, quantity, and delivery destination to book directly.</p>
+          <form id="public-order-form" onsubmit="handlePublicOrder(event)">
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="form-group"><label>Your Name *</label><input type="text" id="ord-name" required placeholder="e.g. Rajesh Kumar"></div>
+              <div class="form-group"><label>WhatsApp / Mobile *</label><input type="tel" id="ord-phone" required placeholder="10-digit mobile"></div>
+            </div>
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="form-group"><label>Brick Type *</label><select id="ord-brick" onchange="updatePublicEstimate()"></select></div>
+              <div class="form-group"><label>Quantity (Bricks) *</label><input type="number" id="ord-qty" min="100" step="100" value="2000" oninput="updatePublicEstimate()" required></div>
+            </div>
+            <div class="grid-2" style="gap:0.75rem;">
+              <div class="form-group"><label>Delivery Destination *</label><select id="ord-dest" onchange="updatePublicEstimate()"></select></div>
+              <div class="form-group">
+                <label>Preferred Vehicle</label>
+                <select id="ord-veh-type" onchange="updatePublicEstimate()">
+                  <option value="tractor">Tractor Trolley (~2,000 bricks)</option>
+                  <option value="truck">Dumper / Truck (~5,000+ bricks)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>Exact Site Address / Landmark *</label><textarea id="ord-address" rows="2" required placeholder="Plot No, Village/Colony, Landmark"></textarea></div>
+
+            <div class="estimate-box">
+              <div style="display:flex; justify-content:space-between; font-size:0.88rem;"><span>Bricks Value:</span><strong id="est-bricks">₹0</strong></div>
+              <div style="display:flex; justify-content:space-between; font-size:0.88rem;"><span>Approx. Transport Freight:</span><strong id="est-freight">₹0</strong></div>
+              <hr style="margin:0.4rem 0; border:none; border-top:1px solid #fed7aa;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>Estimated Total:</strong>
+                <strong style="font-size:1.4rem; color:var(--primary);" id="ord-estimate">₹0</strong>
+              </div>
+              <small style="color:var(--muted);" id="ord-load-info"></small>
+            </div>
+            <button type="submit" class="btn btn-wa" style="width:100%;">Submit Order & Send on WhatsApp</button>
+          </form>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <h2 class="section-title">Why Choose <span class="biz-name-txt">AB Enterprise</span>?</h2>
+            <ul style="padding-left:1.2rem; display:grid; gap:0.75rem; margin:1rem 0;">
+              <li><strong>GST & Cash Invoices:</strong> Proper itemized billing for contractors, builders & home owners.</li>
+              <li><strong>All Destinations Covered:</strong> Dedicated tractors & trucks for city, rural & highway sites.</li>
+              <li><strong>Honest Counting & Quality:</strong> Proper kiln firing, sharp edges & full load guarantee.</li>
+              <li><strong>Instant WhatsApp Updates:</strong> Digital bills, delivery challans & driver tracking on WhatsApp.</li>
+            </ul>
+          </div>
+          <div style="background:#f8fafc; padding:1rem; border-radius:10px; border:1px solid var(--border);">
+            <h4>Kiln & Office Contact</h4>
+            <p style="font-size:0.88rem; color:var(--muted); margin-top:0.25rem;" id="contact-address-display"></p>
+            <p style="font-size:0.88rem; margin-top:0.25rem;">
+              <strong>WhatsApp:</strong> <span id="contact-phone-display"></span><br>
+              <strong>Email:</strong> <span id="contact-email-display"></span><br>
+              <strong>GSTIN:</strong> <span id="contact-gst-display"></span>
+            </p>
+            <button class="btn btn-dark btn-sm" style="margin-top:0.65rem;" onclick="openQuickWhatsApp('Hello, please share kiln location and sample brick details.')">Get Kiln Location on WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== 2. OWNER LOGIN ==================== -->
+  <main id="page-login" class="login-wrap hidden" style="display:none;">
+    <div class="login-card">
+      <div style="text-align:center; margin-bottom:1.1rem;">
+        <span class="brand-badge" style="font-size:1.15rem; padding:0.4rem 0.85rem;">AB</span>
+        <h2 style="margin-top:0.65rem; color:var(--secondary);">Owner Dashboard Login</h2>
+        <p style="font-size:0.86rem; color:var(--muted);">Manage Sales Invoices, Purchase Bills, Destinations, Stock & Profit</p>
+      </div>
+      <div class="demo-creds">
+        <strong>Default Login:</strong><br>
+        Username: <code>owner</code> &nbsp;|&nbsp; Password: <code>ab1234</code>
+      </div>
+      <form onsubmit="handleOwnerLogin(event)" action="javascript:void(0);">
+        <div class="form-group"><label>Owner Username</label><input type="text" id="login-user" required placeholder="Enter username" autocomplete="username"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="login-pass" required placeholder="Enter password" autocomplete="current-password"></div>
+        <p id="login-error" class="hidden" style="color:var(--danger); font-size:0.85rem; margin-bottom:0.7rem; font-weight:600;"></p>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Login to Owner Dashboard</button>
+        <button type="button" class="btn btn-outline" style="width:100%; margin-top:0.55rem;" onclick="openPublicPage()">Back to Public Website</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ==================== 3. OWNER DASHBOARD ==================== -->
+  <main id="page-owner" class="container hidden" style="display:none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem;">
+      <div>
+        <h2 class="section-title">Owner Business Dashboard — <span class="biz-name-txt">AB Enterprise</span></h2>
+        <p class="section-sub" style="margin:0;">
+          Sales & Purchase Invoices, Destinations, Vehicles, Materials, Production, Workers & Khata.
+          <span id="storage-badge" class="badge badge-blue" style="margin-left:6px;">Local Storage</span>
+        </p>
+      </div>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="openPublicPage()">View Public Site</button>
+        <button class="btn btn-danger btn-sm" onclick="logoutOwner()">Logout Owner</button>
+      </div>
+    </div>
+
+    <div id="owner-alerts"></div>
+
+    <!-- KPIs -->
+    <div class="grid-4" style="margin-top:0.95rem;">
+      <div class="kpi-card">
+        <span>Total Sales (Invoiced)</span>
+        <h2 id="kpi-sales">₹0</h2>
+        <small style="color:v
